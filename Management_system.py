@@ -8,7 +8,7 @@ Scout Management System
 """
 import tkinter as tk
 import mysql.connector
-import numpy as np
+import Clock_widget
 
 
 class managment_window:
@@ -33,6 +33,11 @@ class managment_window:
         self.show_entries = tk.Button(self.window, text="Show Entries", command=self.show_entries)
         self.show_entries.grid(row=1, column=4, rowspan=2, columnspan=3)
 
+        # Add a calendar to the window
+        frame = tk.Frame(self.window)
+        frame.grid(row=20, column=8, rowspan=42)
+        Clock_widget.Calendar(window=frame)
+
         # Create window
         self.window.mainloop()
 
@@ -45,7 +50,7 @@ class managment_window:
         None.
 
         """
-
+        # Find amount of columns
         self.mycursor.execute(
             "SELECT count(*) AS anyName FROM information_schema.columns WHERE table_name = 'scouts_1';")
         length = self.mycursor.fetchall()[-1][-1]
@@ -77,6 +82,14 @@ class managment_window:
         print("In create entry")
 
     def add_entry(self):
+        """
+        Adds an entry to the table in sql datebase
+
+        Returns
+        -------
+        None.
+
+        """
         print("In add entry")
 
         # Temp array to store data that will be added to the data base
@@ -137,7 +150,7 @@ class managment_window:
             column_position += 3
 
         print("Entering for loop")
-        column_position = 1
+
         for row in result:
 
             # Reset positions ready for a new row of data
@@ -193,31 +206,4 @@ class managment_window:
         self.mydb.commit()
 
 
-"""
-Experimenting with MySQL and gaining understanding of its functionality 
-"""
-# mydb = mysql.connector.connect(host="localhost", user="root",
-#                               password="[D1x1e2021&D@isy2022]", database="scout_database")
-
-#mycursor = mydb.cursor()
-
-# mycursor.execute(
-#    "ALTER TABLE scouts ADD COLUMN id INT AUTO_INCREMENT PRIMARY KEY")
-#sql = "INSERT INTO scouts_1 (name, Guardian1, Guardian1_contact, Guardian2) VALUES (%s, %s,%s, %s,%s)"
-#val = (('John', 'mum', 'mum_contact', 'dad', 'dad_contact'))
-#mycursor.execute(sql, val)
-#mycursor.execute("SHOW TABLES")
-
-# for x in mycursor:
-#    print(x)
-#mycursor.execute("SELECT * FROM scouts_1")
-#myresult = mycursor.fetchall()
-#mycursor.execute("DESCRIBE scouts_1")
-# for x in mycursor:
-#    print(x[0])
 managment_window()
-# mydb.commit()
-
-#print("Row inserted , ID", mycursor.lastrowid)
-# for x in mycursor:
-#    print(x)
